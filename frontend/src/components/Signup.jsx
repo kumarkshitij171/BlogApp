@@ -4,7 +4,8 @@ import Alert from './Alert';
 
 const Signup = () => {
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  
   const handleClick = () => {
     navigate("/login");
   }

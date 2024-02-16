@@ -5,6 +5,7 @@ import { UserContext } from "../context/UserContext";
 export default function Header() {
 
     const {userInfo,setUserInfo} = useContext(UserContext)
+    const [res,setRes]= useState(false)
     
     useEffect(() => {
         fetch('http://localhost:8080/profile',
@@ -13,11 +14,14 @@ export default function Header() {
                 method: 'POST',
             },
         ).then(response => response.json())
-            .then(data => setUserInfo(data.user?.name))
+            .then(data => (
+                setUserInfo(data.user),
+                setRes(true)
+            ))
             .catch(err => console.log(err));
 
         // console.log(userInfo);
-    }, [userInfo]);
+    }, [res]);
 
     async function HandleLogout(){
         const response = await fetch ('http://localhost:8080/logout',{
@@ -26,6 +30,7 @@ export default function Header() {
         })
         // console.log(response);
         setUserInfo(null)
+        setRes(false)
     }
 
     return (
@@ -44,7 +49,7 @@ export default function Header() {
                         <Link to="/create-post" className="font-semibold mx-3 hover:text-pink-600">create a post</Link>
 
                         <details className="dropdown cursor-pointer mr-2">
-                            <summary className="mx-1 btn">{userInfo}</summary>
+                            <summary className="mx-1 btn">{userInfo?.name}</summary>
                             <ul className="py-1 shadow menu dropdown-content z-[1] bg-base-100 rounded-box absolute p-3 mr-2">
                                 <li className="hover:text-pink-600" onClick={HandleLogout}><Link to ='/'>Logout</Link></li>
                             </ul>

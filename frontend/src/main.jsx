@@ -7,6 +7,7 @@ import Home from './components/Home.jsx'
 import Login from './components/Login.jsx'
 import Signup from './components/Signup.jsx'
 import NotFoundPage from './components/NotFoundPage.jsx'
+import Post from './components/Post.jsx'
 import CreatePost from './components/CreatePost.jsx'
 
 
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
         path: '/create-post',
         element: <CreatePost/>
       },
+      {
+        path: '/blog/:id',
+        element: <Post/>
+      }
+      
     ],
     errorElement: <NotFoundPage/>
   },

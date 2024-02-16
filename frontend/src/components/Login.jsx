@@ -32,7 +32,7 @@ const Login = () => {
       response.json()
         .then(data => (
           // console.log(data)
-          setUserInfo(data.user.name)
+          setUserInfo(data.user)
         ))
         .catch(err => console.log(err))
       navigate('/')
