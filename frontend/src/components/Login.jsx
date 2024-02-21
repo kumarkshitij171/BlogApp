@@ -10,7 +10,7 @@ const Login = () => {
     navigate("/signup");
   }
 
-  const { setUserInfo } = useContext(UserContext)
+  const { setUserInfo,setLoggedIn } = useContext(UserContext)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -32,7 +32,8 @@ const Login = () => {
       response.json()
         .then(data => (
           // console.log(data)
-          setUserInfo(data.user)
+          setUserInfo(data.user),
+          setLoggedIn(true)
         ))
         .catch(err => console.log(err))
       navigate('/')

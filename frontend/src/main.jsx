@@ -9,6 +9,7 @@ import Signup from './components/Signup.jsx'
 import NotFoundPage from './components/NotFoundPage.jsx'
 import Post from './components/Post.jsx'
 import CreatePost from './components/CreatePost.jsx'
+import EditPost from './components/EditPost.jsx'
 
 
 const router = createBrowserRouter([
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
       {
         path: '/blog/:id',
         element: <Post/>
-      }
+      },
+      {
+        path: '/edit-post/:id',
+        element: <EditPost/>
+      },
       
     ],
     errorElement: <NotFoundPage/>

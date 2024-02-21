@@ -4,9 +4,8 @@ import { UserContext } from "../context/UserContext";
 
 export default function Header() {
 
-    const {userInfo,setUserInfo} = useContext(UserContext)
-    const [res,setRes]= useState(false)
-    
+    const { userInfo, setUserInfo,loggedIn,setLoggedIn } = useContext(UserContext)
+
     useEffect(() => {
         fetch('http://localhost:8080/profile',
             {
@@ -15,22 +14,21 @@ export default function Header() {
             },
         ).then(response => response.json())
             .then(data => (
-                setUserInfo(data.user),
-                setRes(true)
+                setUserInfo(data.user)
             ))
-            .catch(err => console.log(err));
+        .catch(err => console.log(err));
 
         // console.log(userInfo);
-    }, [res]);
+    }, [loggedIn]);
 
-    async function HandleLogout(){
-        const response = await fetch ('http://localhost:8080/logout',{
+    async function HandleLogout() {
+        await fetch('http://localhost:8080/logout', {
             credentials: 'include',
             method: 'POST',
         })
-        // console.log(response);
+        
         setUserInfo(null)
-        setRes(false)
+        setLoggedIn(false)
     }
 
     return (
@@ -51,7 +49,7 @@ export default function Header() {
                         <details className="dropdown cursor-pointer mr-2">
                             <summary className="mx-1 btn">{userInfo?.name}</summary>
                             <ul className="py-1 shadow menu dropdown-content z-[1] bg-base-100 rounded-box absolute p-3 mr-2">
-                                <li className="hover:text-pink-600" onClick={HandleLogout}><Link to ='/'>Logout</Link></li>
+                                <li className="hover:text-pink-600" onClick={HandleLogout}><Link to='/'>Logout</Link></li>
                             </ul>
                         </details>
 

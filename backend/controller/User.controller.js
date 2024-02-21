@@ -85,7 +85,7 @@ const profile = async (req, res) => {
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         // decodedToken.name = decodedToken.name.toUpperCase()
-        console.log(decodedToken);
+        // console.log(decodedToken);
         return res
             .status(200)
             .json({ message: 'Profile fetched successfully', user: decodedToken });

@@ -6,7 +6,7 @@ const path = require('path');
 require('dotenv').config({ path: './env' });
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const { CreatePost, getAllPost, getBlog } = require('./controller/Post.controller.js');
+const { CreatePost, getAllPost, getBlog, editPost, deletePost } = require('./controller/Post.controller.js');
 const multer = require('multer');
 
 const PORT = process.env.PORT || 8080;
@@ -60,6 +60,15 @@ router.route('/create-post').post(
 
 router.route('/posts').get(getAllPost)
 router.route('/blog/:id').get(getBlog)
+
+// Edit Post => may update the file so adding multer middleware
+// PUT is restricted to create or update operations, and it should not be used for read operations.
+router.route('/edit-post/:id').put(
+    upload.single('postImg'),
+    editPost)
+
+// delete post
+router.route('/delete-post/:id').delete(deletePost)
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

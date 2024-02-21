@@ -7,7 +7,8 @@ const Home = () => {
 
   useEffect(() => {
     fetch('http://localhost:8080/posts')
-      .then(res => res.json()).then(posts => setPosts(posts))
+      .then(res => res.json())
+      .then(posts => setPosts(posts))
   }, [])
 
   return (
@@ -32,7 +33,7 @@ const Home = () => {
 
                 <div className="flex flex-col gap-2">
                   <div className='flex gap-1'>
-                    <span className="text-sm text-black opacity-85 bold">{posts.name}</span>
+                    <span className="text-sm text-black opacity-85 bold">{posts.username[0].name}</span>
                     <span className="text-sm text-gray-400">{posts.updatedAt.split('T')[0].split("-").reverse().join('-')}</span>
                     {/*  to format date
                       let dateStr = "15-02-2024";
