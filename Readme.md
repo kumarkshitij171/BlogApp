@@ -78,3 +78,21 @@ The server will be running on port `8080`.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests.
+
+### screenshots
+
+- Home Page
+
+![alt text](image.png)
+
+- Create/Edit Post
+
+![alt text](image-1.png)
+
+- Delete Post
+
+![alt text](image-2.png)
+
+- Only Author have only edit and delete functionality
+
+![alt text](image-3.png)

@@ -7,6 +7,7 @@ import Editor from './Editor';
 
 
 const CreatePost = () => {
+  document.title = "Blogify-Create_Post";
 
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');

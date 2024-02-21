@@ -54,7 +54,7 @@ const EditPost = () => {
     return (
         <>
             <div className="flex flex-col w-2/3 mx-auto my-5 lg:w-2/4">
-                <h2 className="text-gray-900 text-lg mb-1 font-medium title-font mx-auto">Create Blog</h2>
+                <h2 className="text-gray-900 text-lg mb-1 font-medium title-font mx-auto">Edit Blog</h2>
                 {/* <p className="leading-relaxed mb-5 text-gray-600">Post-ironic portland shabby chic echo park, banjo fashion axe</p> */}
                 <div className="relative mb-4">
                     <label htmlFor="Title" className="leading-7 text-sm text-gray-600">Title</label>

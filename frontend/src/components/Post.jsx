@@ -4,7 +4,8 @@ import { UserContext } from "../context/UserContext"
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 const Post = () => {
-
+  document.title = "Blogify"
+  
   const [blogInfo, setBlogInfo] = useState(null)
   const { userInfo } = useContext(UserContext)
   const { id } = useParams()

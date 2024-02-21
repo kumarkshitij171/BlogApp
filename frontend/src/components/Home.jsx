@@ -6,6 +6,7 @@ const Home = () => {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
+    document.title = "Blogify"
     fetch('http://localhost:8080/posts')
       .then(res => res.json())
       .then(posts => setPosts(posts))
