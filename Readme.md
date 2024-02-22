@@ -96,3 +96,8 @@ Contributions are welcome! Please feel free to submit pull requests.
 - Only Author have only edit and delete functionality
 
 ![alt text](image-3.png)
+
+<br>
+
+### Deployed on Azure using Docker container
+[Click Here!](https://github.com/kumarkshitij171/BlogApp/tree/Deployment)
