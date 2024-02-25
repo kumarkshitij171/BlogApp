@@ -21,7 +21,7 @@ const Signup = () => {
   const handlesubmit = async (e) => {
     e.preventDefault()
     // console.log(name, email, password)
-    const response = await fetch('http://localhost:8080/signup', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/signup`, {
       method: 'post',
       body: JSON.stringify({ name, email, password }),
       headers: { 'Content-Type': 'application/json' }

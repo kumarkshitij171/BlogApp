@@ -12,7 +12,7 @@ const Post = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(`http://localhost:8080/blog/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/blog/${id}`)
       .then(res => res.json())
       .then(Info => setBlogInfo(Info))
       .catch(err => console.log(err))
@@ -36,7 +36,7 @@ const Post = () => {
 
   const deletePost = async () => {
     setPostDel('Deleting...')
-    const response = await fetch(`http://localhost:8080/delete-post/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/delete-post/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     })

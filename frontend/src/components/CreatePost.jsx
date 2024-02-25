@@ -41,7 +41,7 @@ const CreatePost = () => {
       formData.append('summary', summary);
       formData.append('description', description);
 
-      const response = await fetch('http://localhost:8080/create-post', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/create-post`, {
         method: 'POST',
         body: formData,
         credentials: 'include',

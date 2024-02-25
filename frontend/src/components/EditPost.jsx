@@ -15,7 +15,7 @@ const EditPost = () => {
 
     useEffect(() => {
         document.title = "Blogify-Edit_Post"
-        fetch(`http://localhost:8080/blog/${id}`)
+        fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/blog/${id}`)
             .then(res => res.json())
             .then(data => {
                 setTitle(data.title)
@@ -38,7 +38,7 @@ const EditPost = () => {
 
     const handlePostEdit = async () => {
         setUpdatePostStatus('Updating...');
-        const response = await fetch(`http://localhost:8080/edit-post/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/edit-post/${id}`, {
             method: 'PUT',
             body: formData,
             credentials: 'include',

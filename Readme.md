@@ -42,7 +42,7 @@ npm install
 
 ### Configuration
 
-Make sure you have MongoDB installed and running. Update the `.env` file in the `backend` folder with your MongoDB URI.
+Make sure you have MongoDB installed and running. Update the `.env` file in the `backend` folder with your MongoDB URI & Cloudinary API key.
 
 ### Usage
 

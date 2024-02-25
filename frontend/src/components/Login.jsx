@@ -20,7 +20,7 @@ const Login = () => {
 
   const handlesubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch('http://localhost:8080/login', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/login`, {
       method: 'post',
       body: JSON.stringify({ email, password }),
       headers: { 'Content-Type': 'application/json' },

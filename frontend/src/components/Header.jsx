@@ -7,7 +7,7 @@ export default function Header() {
     const { userInfo, setUserInfo,loggedIn,setLoggedIn } = useContext(UserContext)
 
     useEffect(() => {
-        fetch('http://localhost:8080/profile',
+        fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/profile`,
             {
                 credentials: 'include',
                 method: 'POST',
@@ -22,7 +22,7 @@ export default function Header() {
     }, [loggedIn]);
 
     async function HandleLogout() {
-        await fetch('http://localhost:8080/logout', {
+        await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/logout`, {
             credentials: 'include',
             method: 'POST',
         })

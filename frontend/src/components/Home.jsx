@@ -7,7 +7,7 @@ const Home = () => {
 
   useEffect(() => {
     document.title = "Blogify"
-    fetch('http://localhost:8080/posts')
+    fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/posts`)
       .then(res => res.json())
       .then(posts => setPosts(posts))
   }, [])

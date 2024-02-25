@@ -45,7 +45,7 @@ const router = express.Router();
 })()
 
 //* Routes
-app.use('/', router);
+app.use('/backend', router);
 
 // User Routes
 router.route('/signup').post(signup);
