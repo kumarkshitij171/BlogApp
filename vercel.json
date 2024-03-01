@@ -1,11 +1,19 @@
 {
-    "buildCommand": "cd frontend && npm install && npm run build",
-    "outputDirectory": "frontend/build",
-    "framework": "vite",
-    "rewrite": [
-        {
-            "source": "/backend/(*)",
-            "destination": "/backend/index.js"
-        }
+    "builds": [
+      {
+        "src": "frontend/package.json",
+        "use": "@vercel/static-build"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/backend/(.*)",
+        "dest": "/backend/index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/frontend/$1"
+      }
     ]
-}
+  }
+  

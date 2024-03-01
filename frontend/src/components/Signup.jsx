@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from './Alert';
+import { signupValidation } from '../validations/signup.validation';
 
 const Signup = () => {
 
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
     navigate("/login");
   }
@@ -21,12 +22,15 @@ const Signup = () => {
   const handlesubmit = async (e) => {
     e.preventDefault()
     // console.log(name, email, password)
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/signup`, {
-      method: 'post',
-      body: JSON.stringify({ name, email, password }),
-      headers: { 'Content-Type': 'application/json' }
+
+    const isvalid = await signupValidation.isValid({ name, email, password })
+    if (isvalid) {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/signup`, {
+        method: 'post',
+        body: JSON.stringify({ name, email, password }),
+        headers: { 'Content-Type': 'application/json' }
       });
-      if(response.status===200){
+      if (response.status === 200) {
         setRes(true)
         setMessage('Registration Successful')
         setMtype('Success')
@@ -35,7 +39,7 @@ const Signup = () => {
         }, 3000);
         navigate('/login')
       }
-      else{
+      else {
         setRes(true)
         setMessage('Registration failed')
         setMtype('Warning')
@@ -43,14 +47,22 @@ const Signup = () => {
           setRes(false)
         }, 3000);
       }
-      
+    }
+    else{
+      setRes(true)
+      setMessage('Invalid Data')
+      setMtype('Warning')
+      setTimeout(() => {
+        setRes(false)
+      }, 3000);
+    }
   }
- 
+
   return (
     <>
       <main>
         <div className="flex flex-col w-2/3 mx-auto my-5 lg:w-2/4">
-        {res && < Alert type = {mtype} message = {message} />}
+          {res && < Alert type={mtype} message={message} />}
 
           <h2 className="text-gray-900 text-lg mb-1 font-medium title-font mx-auto">SignUp</h2>
           {/* <p className="leading-relaxed mb-5 text-gray-600">Post-ironic portland shabby chic echo park, banjo fashion axe</p> */}

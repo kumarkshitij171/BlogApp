@@ -44,8 +44,11 @@ const router = express.Router();
     });
 })()
 
-//* Routes
-app.use('/backend', router);
+//* Routes -> production to vercel or any other platform
+// app.use('/backend',cors(), router);
+
+//* Routes -> development
+app.use('/', router);
 
 // User Routes
 router.route('/signup').post(signup);

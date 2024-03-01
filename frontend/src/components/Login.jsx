@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import Alert from './Alert';
 import { UserContext } from '../context/UserContext';
+import { loginValidation } from '../validations/Login.validation';
+
 
 const Login = () => {
 
@@ -10,7 +12,7 @@ const Login = () => {
     navigate("/signup");
   }
 
-  const { setUserInfo,setLoggedIn } = useContext(UserContext)
+  const { setUserInfo, setLoggedIn } = useContext(UserContext)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,27 +22,39 @@ const Login = () => {
 
   const handlesubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/login`, {
-      method: 'post',
-      body: JSON.stringify({ email, password }),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include' // to send cookies
-    });
-    // console.log(response);
 
-    if (response.status === 200) {
-      response.json()
-        .then(data => (
-          // console.log(data)
-          setUserInfo(data.user),
-          setLoggedIn(true)
-        ))
-        .catch(err => console.log(err))
-      navigate('/')
+    const isvalid = await loginValidation.isValid({ email, password })
+    
+    if (isvalid) {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/login`, {
+        method: 'post',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include' // to send cookies
+      });
+      // console.log(response);
+
+      if (response.status === 200) {
+        response.json()
+          .then(data => (
+            // console.log(data)
+            setUserInfo(data.user),
+            setLoggedIn(true)
+          ))
+          .catch(err => console.log(err))
+        navigate('/')
+      }
+      else {
+        setRes(true)
+        await response.json().then(data => setError(data.error))
+        setTimeout(() => {
+          setRes(false)
+        }, 2000);
+      }
     }
     else {
       setRes(true)
-      await response.json().then(data => setError(data.error))
+      setError('Invalid Email or Password')
       setTimeout(() => {
         setRes(false)
       }, 2000);
