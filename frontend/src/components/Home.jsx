@@ -1,9 +1,10 @@
+import { useEffect, useContext } from "react";
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from "react";
+import { PostContext } from '../context/PostContext';
 
 const Home = () => {
 
-  const [posts, setPosts] = useState([])
+  const { posts, setPosts } = useContext(PostContext)
 
   useEffect(() => {
     document.title = "Blogify"

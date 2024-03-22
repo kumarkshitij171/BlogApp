@@ -14,6 +14,7 @@ const Signup = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [profileImg, setProfileImg] = useState(null)
 
   const [res, setRes] = useState(false)
   const [message, setMessage] = useState('')
@@ -25,10 +26,16 @@ const Signup = () => {
 
     const isvalid = await signupValidation.isValid({ name, email, password })
     if (isvalid) {
+      const formData = new FormData();
+      formData.append('profileImg', profileImg);
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+
       const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/signup`, {
         method: 'post',
-        body: JSON.stringify({ name, email, password }),
-        headers: { 'Content-Type': 'application/json' }
+        body: formData,
+        // headers: { 'Content-Type': 'multipart/form-data' }
       });
       if (response.status === 200) {
         setRes(true)
@@ -48,7 +55,7 @@ const Signup = () => {
         }, 3000);
       }
     }
-    else{
+    else {
       setRes(true)
       setMessage('Invalid Data')
       setMtype('Warning')
@@ -67,7 +74,7 @@ const Signup = () => {
           <h2 className="text-gray-900 text-lg mb-1 font-medium title-font mx-auto">SignUp</h2>
           {/* <p className="leading-relaxed mb-5 text-gray-600">Post-ironic portland shabby chic echo park, banjo fashion axe</p> */}
           <div className="relative mb-4">
-            <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name</label>
+            <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name <span className='text-red-500'>*</span></label>
             <input
               type="text"
               id="name"
@@ -79,7 +86,7 @@ const Signup = () => {
             />
           </div>
           <div className="relative mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
+            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email <span className='text-red-500'>*</span></label>
             <input
               type="email"
               id="email"
@@ -91,7 +98,16 @@ const Signup = () => {
             />
           </div>
           <div className="relative mb-4">
-            <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password</label>
+            <label htmlFor="file" className="leading-7 text-sm text-gray-600">Image</label>
+            <input
+              type="file"
+              name="profileImg"
+              className="w-full bg-white rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              onChange={(e) => setProfileImg(e.target.files[0])}
+            />
+          </div>
+          <div className="relative mb-4">
+            <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password <span className='text-red-500'>*</span></label>
             <input
               type="password"
               id="password"
@@ -103,12 +119,13 @@ const Signup = () => {
             />
           </div>
           <button
-            className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+            className="text-white bg-indigo-500 border-0 mb-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
             onClick={handlesubmit}
           >SignUp</button>
           <p className="text-s text-gray-500 mt-3">
             Already have an account? <span onClick={handleClick} className="text-indigo-500 hover:text-indigo-600 cursor-pointer">Login</span>
           </p>
+          {/* <p className='mt-4'><span className='text-red-500'>*</span> fields are mandatory to fill</p> */}
         </div>
       </main>
     </>

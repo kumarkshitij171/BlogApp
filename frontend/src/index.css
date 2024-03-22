@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.customOverlay {
+  background: #fbf3d598;
+}
+.customModal {
+  background: #b4e0f4;
+  border-radius: 1rem;
+}

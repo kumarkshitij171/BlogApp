@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault()
 
     const isvalid = await loginValidation.isValid({ email, password })
-    
+
     if (isvalid) {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/login`, {
         method: 'post',
@@ -38,8 +38,8 @@ const Login = () => {
         response.json()
           .then(data => (
             // console.log(data)
-            setUserInfo(data.user),
-            setLoggedIn(true)
+            setLoggedIn(true),
+            setUserInfo(data.user)
           ))
           .catch(err => console.log(err))
         navigate('/')
@@ -68,7 +68,7 @@ const Login = () => {
           <h2 className="text-gray-900 text-lg mb-1 font-medium title-font mx-auto">Login</h2>
           {/* <p className="leading-relaxed mb-5 text-gray-600">Post-ironic portland shabby chic echo park, banjo fashion axe</p> */}
           <div className="relative mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
+            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email <span className='text-red-500'>*</span></label>
             <input
               type="email"
               id="email"
@@ -80,7 +80,7 @@ const Login = () => {
             />
           </div>
           <div className="relative mb-4">
-            <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password</label>
+            <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password <span className='text-red-500'>*</span></label>
             <input
               type="password"
               id="password"
@@ -93,12 +93,13 @@ const Login = () => {
           </div>
 
           <button
-            className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+            className="text-white bg-indigo-500 border-0 mb-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
             onClick={handlesubmit}
           >Login</button>
           <p className="text-s text-gray-500 mt-3">
             Don't have an account? <span onClick={handleClick} className="text-indigo-500 hover:text-indigo-600 cursor-pointer">SignUp</span>
           </p>
+          {/* <p className='mt-4'><span className='text-red-500'>*</span> fields are mandatory to fill</p> */}
         </div>
       </main>
     </>

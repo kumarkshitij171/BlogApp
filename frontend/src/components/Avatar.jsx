@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import { UserContext } from '../context/UserContext';
 
-const Avatar = () => {
+const Avatar = ({className,textClass}) => {
     const { userInfo } = useContext(UserContext)
     const username = userInfo?.name;
     
@@ -19,8 +19,10 @@ const Avatar = () => {
     
     return (
         <div>
-            <div className={"w-6 h-6 ml-2 relative rounded-full flex items-center " + color}>
-                <div className="text-center w-full opacity-70">{username[0]}</div>
+            <div className={`${className} ml-2 relative rounded-full flex items-center ${color}`}>
+                <button 
+                type='button'
+                className={`text-center w-full opacity-70 ${textClass}`}>{username[0].toUpperCase()}</button>
 
             </div>
         </div>

@@ -57,6 +57,7 @@ The server will be running on port `8080`.
 ## Features
 
 - **Authentication**: User authentication using JWT tokens.
+- **Edit Profile**: Users can edit their profile information.
 - **CRUD Operations**: Create, Read, Update, and Delete blog posts.
 - **Responsive Design**: Mobile-friendly user interface.
 
@@ -68,12 +69,18 @@ The server will be running on port `8080`.
   - React Router (for routing)
   - fetch (for HTTP requests)
   - Tailwind (for styling)
+  - Yup (for form validation)
+  - React Quill (for rich text editing)
+  
 - **Backend**:
   - Node.js
   - Express.js
   - MongoDB (with Mongoose for ORM)
   - JSON Web Tokens (JWT) for authentication
-
+  - Bcrypt (for password hashing)
+  - Multer (for file uploads)
+  - Cloudinary (for image uploads)
+  - Sharp (for image resizing)
 
 ## Contributing
 

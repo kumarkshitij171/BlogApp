@@ -28,9 +28,9 @@ const CreatePost = () => {
     if (!title || !description || !summary || !postImg) {
       setResStatus(false)
 
-        setTimeout(() => {
-          setResStatus(true)
-        }, 2000);
+      setTimeout(() => {
+        setResStatus(true)
+      }, 2000);
     }
 
     else {
@@ -107,6 +107,7 @@ const CreatePost = () => {
 
         <label htmlFor="description" className="leading-7 text-sm text-gray-600">Description</label>
         <Editor value={description} onChange={setDescription} />
+
         <button
           className="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg mt-3"
           onClick={handlePost}
