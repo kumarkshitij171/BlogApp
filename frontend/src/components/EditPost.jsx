@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useParams,useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import Editor from './Editor';
+import { UserContext } from '../context/UserContext';
 
 const EditPost = () => {
 
@@ -12,6 +13,13 @@ const EditPost = () => {
     const [updatePostStatus, setUpdatePostStatus] = useState('Update');
 
     const { id } = useParams()
+    const { userInfo } = useContext(UserContext)
+
+    useEffect(() => {
+        if (!userInfo) {
+            navigate('/login')
+        }
+    }, [userInfo])
 
     useEffect(() => {
         document.title = "Blogify-Edit_Post"
@@ -29,7 +37,7 @@ const EditPost = () => {
 
     // form data to be sent to the backend
     const formData = new FormData();
-    if(postImg){
+    if (postImg) {
         formData.append('postImg', postImg);
     }
     formData.append('title', title);

@@ -104,6 +104,10 @@ Contributions are welcome! Please feel free to submit pull requests.
 
 ![alt text](image-3.png)
 
+- User can view and update their profile
+
+![alt text](image-4.png)
+
 <br>
 
 ### Deployed on Azure using Docker container

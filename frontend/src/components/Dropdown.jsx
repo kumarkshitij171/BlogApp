@@ -163,7 +163,16 @@ function Dropdown() {
               </li>
               <Modal
                 open={openModal}
-                onClose={() => setOpenModal(false)}
+                onClose={() => (
+                  setOpenModal(false),
+                  // reset the values in frontend modal
+                  setEditProfile(false),
+                  setName(userInfo?.name),
+                  setEmail(userInfo?.email),
+                  setPassword(null),
+                  setNewPassword(null),
+                  setUpdateProfileImg(null)
+                )}
                 classNames={{
                   overlay: 'customOverlay',
                   modal: 'customModal',
@@ -213,11 +222,11 @@ function Dropdown() {
                         )}
                     </p>
                     <p className="text-lg font-semibold">
-                      {editProfile ? "Old Password" : "Password:"}
+                      {editProfile ? "Old Password: " : "Password:"}
                       {editProfile ?
                         (
                           <input
-                            className="border-2 border-black rounded px-1 ml-1 bg-transparent max-w-44 mt-1"
+                            className="border-2 border-black rounded px-1 ml-1 bg-transparent max-w-40 mt-1"
                             placeholder='*********'
                             type='password'
                             value={password}
@@ -234,7 +243,7 @@ function Dropdown() {
                       (
                         <p className="text-lg font-semibold">New Password:
                           <input
-                            className="border-2 border-black rounded px-1 ml-1 bg-transparent max-w-44 mt-1"
+                            className="border-2 border-black rounded px-1 ml-1 bg-transparent max-w-40 my-1"
                             type='password'
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}

@@ -1,11 +1,19 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from './Alert';
 import { signupValidation } from '../validations/signup.validation';
+import { UserContext } from '../context/UserContext';
 
 const Signup = () => {
 
   const navigate = useNavigate();
+  const { userInfo } = useContext(UserContext)
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/')
+    }
+  }, [userInfo])
 
   const handleClick = () => {
     navigate("/login");
@@ -98,7 +106,7 @@ const Signup = () => {
             />
           </div>
           <div className="relative mb-4">
-            <label htmlFor="file" className="leading-7 text-sm text-gray-600">Image</label>
+            <label htmlFor="file" className="leading-7 text-sm text-gray-600">Profile Image</label>
             <input
               type="file"
               name="profileImg"

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Alert from './Alert';
 import { UserContext } from '../context/UserContext';
 import { loginValidation } from '../validations/Login.validation';
@@ -8,11 +8,17 @@ import { loginValidation } from '../validations/Login.validation';
 const Login = () => {
 
   const navigate = useNavigate()
+  const { userInfo, setUserInfo, setLoggedIn } = useContext(UserContext)
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/')
+    }
+  }, [userInfo])
+
   const handleClick = () => {
     navigate("/signup");
   }
-
-  const { setUserInfo, setLoggedIn } = useContext(UserContext)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

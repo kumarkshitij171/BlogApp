@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactQuill from 'react-quill';
 
 const Editor = ({value,onChange}) => {
@@ -18,7 +18,6 @@ const Editor = ({value,onChange}) => {
     return (
         <>
             <ReactQuill modules={modules} value={value} onChange={onChange} />
-
         </>
     )
 }

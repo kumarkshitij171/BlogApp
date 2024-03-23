@@ -1,13 +1,21 @@
-import { useState } from 'react';
-import ReactQuill from 'react-quill';
+import { useContext, useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
 import Alert from './Alert'
 import Editor from './Editor';
-
+import { UserContext } from '../context/UserContext';
 
 const CreatePost = () => {
   document.title = "Blogify-Create_Post";
+
+  const { userInfo } = useContext(UserContext)
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/login')
+    }
+  }, [userInfo])
 
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
@@ -15,24 +23,18 @@ const CreatePost = () => {
   const [description, setDescription] = useState('');
 
   const [postStatus, setPostStatus] = useState('Post');
-
   const [resStatus, setResStatus] = useState(true);
-
-  const navigate = useNavigate();
 
   async function handlePost(e) {
     e.preventDefault();
-
     setPostStatus('Posting...');
     // validation
     if (!title || !description || !summary || !postImg) {
       setResStatus(false)
-
       setTimeout(() => {
         setResStatus(true)
       }, 2000);
     }
-
     else {
       // console.log(title, summary, postImg, description);
       const formData = new FormData();
@@ -46,14 +48,12 @@ const CreatePost = () => {
         body: formData,
         credentials: 'include',
       });
-
       // console.log(response);
       if (response.status === 200) {
         navigate('/');
       }
       else {
         setResStatus(false)
-
         setTimeout(() => {
           setResStatus(true)
         }, 2000);
