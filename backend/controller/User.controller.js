@@ -79,7 +79,11 @@ const Login = async (req, res) => {
 
         return res
             .status(200)
-            .cookie('token', token, { httpOnly: true })     // httpOnly:true => cookie can't be modified by client side script
+            .cookie('token', token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+            })     // httpOnly:true => cookie can't be modified by client side script
             .json({ message: 'Login successful' });
     } catch (error) {
         return res.status(400).json(error?.message);
@@ -93,7 +97,11 @@ const Logout = async (req, res) => {
     // remove token from cookie
     return res
         .status(200)
-        .cookie('token', '', { httpOnly: true })
+        .cookie('token', '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        })
         .json({ message: 'Logout successful' });
 }
 
@@ -140,7 +148,7 @@ const editProfile = async (req, res) => {
 
             profileImgPath = profileImgPath.url
         }
-        
+
         let hashedPassword = null;
         if (password && newPassword) {
             const user = await User.findOne({ email });
@@ -154,7 +162,7 @@ const editProfile = async (req, res) => {
         // decode the token and get user id
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-        if(!decodedToken){
+        if (!decodedToken) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
 
@@ -211,7 +219,11 @@ const editProfile = async (req, res) => {
         }, process.env.JWT_SECRET, { expiresIn: '2d' });
         return res
             .status(200)
-            .cookie('token', newToken, { httpOnly: true })
+            .cookie('token', newToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+            })
             .json({ message: 'Profile updated successfully', user });
     }
     catch (error) {
