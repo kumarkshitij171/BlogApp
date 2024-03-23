@@ -82,7 +82,7 @@ const Login = async (req, res) => {
             .cookie('token', token, {
                 httpOnly: true,
                 secure: true,
-                sameSite: 'none',
+                sameSite: 'None',
             })     // httpOnly:true => cookie can't be modified by client side script
             .json({ message: 'Login successful' });
     } catch (error) {
@@ -100,7 +100,7 @@ const Logout = async (req, res) => {
         .cookie('token', '', {
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'None',
         })
         .json({ message: 'Logout successful' });
 }
@@ -118,7 +118,10 @@ const profile = async (req, res) => {
         // console.log(decodedToken);
         return res
             .status(200)
-            .json({ message: 'Profile fetched successfully', user: decodedToken });
+            .json({
+                message: 'Profile fetched successfully',
+                user: decodedToken
+            });
     }
     catch (error) {
         return res.status(400).json(error?.message);
@@ -222,7 +225,7 @@ const editProfile = async (req, res) => {
             .cookie('token', newToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: 'none',
+                sameSite: 'None',
             })
             .json({ message: 'Profile updated successfully', user });
     }
