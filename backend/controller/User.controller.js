@@ -139,8 +139,9 @@ const editProfile = async (req, res) => {
         return res.status(400).json({ error: 'All fields are required' })
     }
     try {
-        // console.log(req?.files['profileImg'][0])
-        const profileImg = req?.files['profileImg'][0];
+        // console.log(req.files)
+        const profileImg = req.files ? req?.files['profileImg'][0] : undefined;
+        // console.log(profileImg)
         let profileImgPath = null;
         if (profileImg) {
             profileImgPath = profileImg?.path;
@@ -168,7 +169,6 @@ const editProfile = async (req, res) => {
         if (!decodedToken) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-
         // finding the user by id
         const userById = await User.findById(decodedToken.id);
         if (!userById) {
@@ -209,7 +209,7 @@ const editProfile = async (req, res) => {
 
         // delete previous profile image from cloudinary
         if (previousProfileImg) {
-            deleteFromCloudinary(previousProfileImg)
+            await deleteFromCloudinary(previousProfileImg)
         }
         user.password = undefined;
 
