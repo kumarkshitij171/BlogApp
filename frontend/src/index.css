@@ -8,3 +8,18 @@
   background: #b4e0f4;
   border-radius: 1rem;
 }
+/* Post Description Css formatting */
+pre{
+  background-color: beige;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+#postDesc>ul>li{
+  list-style: disc;
+  margin-left: 1rem;
+}
+#postDesc>ol>li{
+  list-style: decimal;
+  margin-left: 1rem;
+}

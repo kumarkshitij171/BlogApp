@@ -10,8 +10,10 @@ function App() {
     <>
       <UserContextprovider >
         <PostContextprovider>
+          <div className="relative min-h-[80vh]">
           <Header />
-          <Outlet />
+          <Outlet/>
+          </div>
           {/* <Footer/> */}
         </PostContextprovider>
       </UserContextprovider>

@@ -1,18 +1,19 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
     return (
         <div className=''>
-            <div className="bg-white pt-4 sm:pt-10 lg:pt-12 absolute bottom-0 w-full">
+            <div className="bg-white pt-4 sm:pt-10 lg:pt-12 w-full">
                 <footer className="max-w-screen-2xl">
                     <div className="flex flex-col items-center justify-between gap-4 border-t border-b py-2 md:flex-row px-4">
                         {/* <!-- nav - start --> */}
                         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start md:gap-6">
-                            <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">About</a>
-                            <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Investor Relations</a>
+                            <Link to="/" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">About</Link>
+                            {/* <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Investor Relations</a>
                             <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Jobs</a>
-                            <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Press</a>
-                            <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Blog</a>
+                            <a href="#" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Press</a> */}
+                            <Link to="/" className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600">Blog</Link>
                         </nav>
                         {/* <!-- nav - end --> */}
 

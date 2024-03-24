@@ -97,7 +97,7 @@ const Post = () => {
 
                 <h1 className="mb-4 text-2xl font-bold text-gray-800 sm:text-3xl md:mb-6 md:text-left">{blogInfo.title}</h1>
 
-                <div className="mb-6 text-gray-500 sm:text-lg md:mb-8" dangerouslySetInnerHTML={{ __html: blogInfo.description }} />
+                <div className="mb-6 text-gray-500 sm:text-lg md:mb-8" id="postDesc" dangerouslySetInnerHTML={{ __html: blogInfo.description }} />
 
                 <h2 className="mb-2 text-xl font-semibold text-gray-800 sm:text-2xl md:mb-4 md:text-left">Summary</h2>
 

@@ -1,16 +1,20 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Link } from 'react-router-dom'
 import { PostContext } from '../context/PostContext';
+import ReactLoading from "react-loading";
 
 const Home = () => {
 
   const { posts, setPosts } = useContext(PostContext)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     document.title = "Blogify"
     fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/posts`)
       .then(res => res.json())
-      .then(posts => setPosts(posts))
+      .then(posts => setPosts(posts),
+        setLoading(false)
+      )
   }, [])
 
   return (
@@ -61,7 +65,30 @@ const Home = () => {
             ))}
             {/* <!-- Blog article - end --> */}
 
-            {posts.length <= 0 && <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">No post to show create one.</h2>}
+            {posts.length <= 0 &&
+              <div className="">
+                <h2
+                  className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">
+                  No post to show create one.
+                </h2>
+                <div className="flex flex-col items-center">
+                  <ReactLoading type="bars" color="#0000FF"
+                    height={100} width={50} />
+                  <p>Fetching Data from the backend</p>
+                </div>
+              </div>
+            }
+            {
+              loading && <div className="">
+
+                <div className="flex flex-col items-center">
+                  <ReactLoading type="bars" color="#0000FF"
+                    height={50} width={50} />
+                  <p className="font-semibold">Fetching Data from the backend</p>
+                </div>
+              </div>
+            }
+
 
           </div>
         </div>
