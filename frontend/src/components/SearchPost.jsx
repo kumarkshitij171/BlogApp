@@ -15,10 +15,24 @@ const SearchPost = () => {
 
         debounceTimeout = setTimeout(() => {
             setPosts(prevPosts => prevPosts
-                .filter(post => post && post
+                .filter(post => post && (post
                     .title
                     .toLowerCase()
-                    .includes(e.target.value.toLowerCase())
+                    .includes(e.target.value.toLowerCase()) ||
+                    post
+                        .description
+                        .toLowerCase()
+                        .includes(e.target.value.toLowerCase()) ||
+                    post
+                        .username[0]
+                        .name
+                        .toLowerCase()
+                        .includes(e.target.value.toLowerCase()) ||
+                    post
+                        .summary
+                        .toLowerCase()
+                        .includes(e.target.value.toLowerCase())
+                )
                 ))
 
         }, 1200);
@@ -37,7 +51,7 @@ const SearchPost = () => {
                 </svg>
             </button>
             <input
-                className="bg-transparent rounded-md md:p-1 mx-1 outline-none"
+                className="bg-transparent rounded-md md:p-1 mx-1 w-inherit outline-none"
                 placeholder="search"
                 type="search"
                 value={seachText}
