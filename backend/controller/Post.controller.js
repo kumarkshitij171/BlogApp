@@ -1,7 +1,8 @@
 const { uploadOnCloudinary, deleteFromCloudinary } = require('../utils/cloudinary.utils');
 const { Post } = require('../models/Post.model');
-const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose');
+const { Comment } = require('../models/Comment.model');
+
 
 
 const CreatePost = async (req, res) => {
@@ -24,26 +25,21 @@ const CreatePost = async (req, res) => {
         postImg = await uploadOnCloudinary(postImgPath)
         postImg = postImg.url
 
+        if (!postImg) {
+            return res.status(400).json({ error: 'Image upload failed' })
+        }
+
         // send the post into DB => but how we know which user is creating the post
 
         // from the token we have to parse the values 
-        const { token } = req.cookies;
-        if (!token) {
-            return res.status(400).json({ error: 'Invalid credentials' });
-        }
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        if (!decodedToken) {
-            return res.status(400).json({ error: 'Invalid credentials' });
-        }
-
-        // console.log(decodedToken);
+        const user = req.user
 
         const post = await Post.create({
             title,
             summary,
             postImg,
             description,
-            username: decodedToken.id
+            username: user.id
         })
         if (!post) {
             return res.status(400).json({ error: 'Post creation failed' })
@@ -96,7 +92,7 @@ const getBlog = async (req, res) => {
         const blog = await Post.aggregate([
             {
                 $match: {
-                    _id: _id,
+                    _id
                 },
             },
             {
@@ -108,9 +104,83 @@ const getBlog = async (req, res) => {
                 },
             },
             {
+                $lookup: {
+                    from: "comments",
+                    let: { post_id: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$post_id", "$$post_id"] },
+                                        { $eq: ["$isReply", false] }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            $lookup: {
+                                from: "users",
+                                localField: "user_id",
+                                foreignField: "_id",
+                                as: "user_id",
+                            },
+                        },
+                        {
+                            $unwind: "$user_id"
+                        },
+                        {
+                            $lookup: {
+                                from: "comments",
+                                localField: "replies",
+                                foreignField: "_id",
+                                as: "replies",
+                                pipeline: [
+                                    {
+                                        $lookup: {
+                                            from: "users",
+                                            localField: "user_id",
+                                            foreignField: "_id",
+                                            as: "user_id",
+                                        },
+                                    },
+                                    {
+                                        $project: {
+                                            "user_id.email": 0,
+                                            "user_id.password": 0,
+                                            replies: 0,
+                                        },
+                                    },
+                                    {
+                                        $addFields: {
+                                            user_id: {
+                                                $first: "$user_id",
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                    as: "comments",
+                },
+            },
+            {
+                $addFields: {
+                    TotalComment: {
+                        $size: "$comments",
+                    },
+                },
+            },
+            {
                 $project: {
                     "username.password": 0,
                     "username.email": 0,
+                    "comments.replies.post_id": 0,
+                    "comments.post_id": 0,
+                    "comments.replies.parentComment": 0,
+                    "comments.user_id.password": 0,
+                    "comments.user_id.email": 0
                 },
             },
         ])
@@ -128,20 +198,15 @@ const getBlog = async (req, res) => {
 const editPost = async (req, res) => {
     // getting the Id
     const { id } = req.params;
-    // checking the post author is same as the user that is logged in if yes then we update the post
-    const { token } = req.cookies;
-    if (!token) {
-        return res.status(400).json({ error: 'Invalid credentials' })
-    }
+    // checking the post author is same as the user that is logged in if yes then we update the post using middleware
+    const user = req.user;
     try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-
         const post = await Post.findById(id)
         if (!post) {
             return res.status(400).json({ error: 'Post not found' })
         }
         // console.log((post.username._id).toString()===decodedToken.id);
-        if ((post.username._id).toString() !== decodedToken.id) {
+        if ((post.username._id).toString() !== user.id) {
             return res.status(400).json({ error: 'You are not authorized to edit this post' })
         }
         // user verified now can update the post
@@ -180,21 +245,29 @@ const editPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
     const { id } = req.params
-    const { token } = req.cookies;
-    if (!token) {
-        return res.status(400).json({ error: 'Invalid credentials' })
-    }
+    const user = req.user
     // check if the user is authorized to delete the post
     try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
         const post = await Post.findById(id)
         if (!post) {
             return res.status(400).json({ error: 'Post not found' })
         }
-        if ((post.username._id).toString() !== decodedToken.id) {
+        if ((post.username._id).toString() !== user.id) {
             return res.status(400).json({ error: 'You are not authorized to delete this post' })
         }
         // delete the post
+        const PostFound = await Post.findById(id)
+        // Deleting the comments and replies of the post
+        PostFound.comments?.map(
+            async (comment) => {
+                comment.replies?.map(
+                    async (reply) => {
+                        await Comment.findByIdAndDelete(reply._id)
+                    })
+                await Comment.findByIdAndDelete(comment._id)
+            }
+        )
+        // All comments and replies deleted now delete the post
         const deletedPost = await Post.findByIdAndDelete(id)
         if (!deletedPost) {
             return res.status(400).json({ error: 'Post delete failed' })

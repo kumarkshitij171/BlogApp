@@ -5,10 +5,15 @@ const SharpFunction = require("../utils/sharp.utils");
 const { uploadOnCloudinary, deleteFromCloudinary } = require("../utils/cloudinary.utils");
 const salt = bcrypt.genSaltSync(12);
 
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
 const signup = async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
+    }
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Invalid email' });
     }
     try {
         const profileImg = req?.file;
@@ -49,7 +54,9 @@ const Login = async (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
     }
-
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Invalid email' });
+    }
     try {
         // Check if user exists
         const user = await User.findOne({ email })
@@ -92,8 +99,6 @@ const Login = async (req, res) => {
 };
 
 const Logout = async (req, res) => {
-    // TODO: verify token => middleware => get user => remove token from user => send response
-
     // remove token from cookie
     return res
         .status(200)
@@ -106,41 +111,28 @@ const Logout = async (req, res) => {
 }
 
 const profile = async (req, res) => {
-    // grab user from token so require cookie-parser
-    let { token } = req.cookies;
-    if (!token) {
-        return res.status(400).json({ error: 'Invalid credentials' });
-    }
-    // decode the token and get user id
-    try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        // decodedToken.name = decodedToken.name.toUpperCase()
-        // console.log(decodedToken);
-        return res
-            .status(200)
-            .json({
-                message: 'Profile fetched successfully',
-                user: decodedToken
-            });
-    }
-    catch (error) {
-        return res.status(400).json(error?.message);
-    }
+    const user = req.user;
+    return res
+        .status(200)
+        .json({
+            message: 'Profile fetched successfully',
+            user
+        });
 }
 
 const editProfile = async (req, res) => {
-    let { token } = req.cookies;
-    if (!token) {
-        return res.status(400).json({ error: 'Invalid credentials' });
-    }
+    const myUser = req.user;
     const { name, email, password, newPassword } = req.body;
     // console.log(name,email,password,newPassword)
     if (!name || !email) {
         return res.status(400).json({ error: 'All fields are required' })
     }
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Invalid email' });
+    }
     try {
         // console.log(req.files)
-        const profileImg = req.files ? req?.files['profileImg'][0] : undefined;
+        const profileImg = req?.files['profileImg'] ? req.files['profileImg'][0] : undefined;
         // console.log(profileImg)
         let profileImgPath = null;
         if (profileImg) {
@@ -163,14 +155,8 @@ const editProfile = async (req, res) => {
             hashedPassword = bcrypt.hashSync(newPassword, salt);
         }
 
-        // decode the token and get user id
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-        if (!decodedToken) {
-            return res.status(400).json({ error: 'Invalid credentials' });
-        }
         // finding the user by id
-        const userById = await User.findById(decodedToken.id);
+        const userById = await User.findById(myUser.id);
         if (!userById) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }

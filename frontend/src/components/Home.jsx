@@ -34,7 +34,7 @@ const Home = () => {
                   <div className="flex flex-col gap-2">
                     <div className='flex gap-1'>
                       <span className="text-sm text-black opacity-85 bold">{posts.username[0].name}</span>
-                      <span className="text-sm text-gray-400">{posts.updatedAt.split('T')[0].split("-").reverse().join('-')}</span>
+                      <span className="text-sm text-gray-400">{posts.createdAt.split('T')[0].split("-").reverse().join('-')}</span>
                     </div>
                     <h2 className="text-xl font-bold text-gray-800">
                       <p className="transition duration-100 ">{posts.title}</p>

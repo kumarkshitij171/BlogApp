@@ -40,7 +40,7 @@ export default function Header() {
 
                     {userInfo &&
                         <div className="flex">
-                            <Link to="/create-post" className="font-semibold mx-2 sm:mx-3 hover:text-pink-600 pt-1">create a post</Link>
+                            <Link to="/create-post" className="font-semibold mx-1 sm:mx-2 hover:text-pink-600 pt-1">Create post</Link>
 
                             <Dropdown />
                         </div>

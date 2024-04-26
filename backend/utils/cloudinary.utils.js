@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
-require('dotenv').config(); // have to do it again don't know why
-
+require('dotenv').config();
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_CLOUD_API_KEY,

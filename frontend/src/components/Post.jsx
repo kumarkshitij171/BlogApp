@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import { UserContext } from "../context/UserContext"
+import Comment from "./Comment"
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 const Post = () => {
@@ -11,12 +12,14 @@ const Post = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
+  const [commentCheck, setCommentCheck] = useState(null)
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/blog/${id}`)
       .then(res => res.json())
       .then(Info => setBlogInfo(Info))
       .catch(err => console.log(err))
-  }, [])
+  }, [commentCheck])
 
   const editPost = async () => {
     navigate(`/edit-post/${id}`)
@@ -72,7 +75,7 @@ const Post = () => {
                 }}
                 center>
                 <div className="m-3 py-1">
-                  <p className="">Are you want to <span className="font-bold text-red-600">'delete'</span> the post.</p>
+                  <p className="">Are you want to <span className="font-bold text-red-600">{'delete'}</span> the post.</p>
                   <p className="my-1">Write delete in input field</p>
                   <input className="bg-gray-200 p-1 rounded-md" type="text" value={modalVal} onChange={(e) => setModalVal(e.target.value)} />
                   <button className="bg-red-600 block p-2 my-2 rounded-lg font-bold text-white" disabled={modalVal !== 'delete'} onClick={deletePost}>{PostDel}</button>
@@ -92,7 +95,7 @@ const Post = () => {
 
               <div className="md:pt-8">
                 <span className="text-center mr-2 font-bold text-indigo-500 md:text-left">{blogInfo.username[0].name}</span>
-                <span className="text-sm text-gray-400">{blogInfo.updatedAt.split('T')[0].split("-").reverse().join('-')}</span>
+                <span className="text-sm text-gray-400">{blogInfo.createdAt.split('T')[0].split("-").reverse().join('-')}</span>
 
 
                 <h1 className="mb-4 text-2xl font-bold text-gray-800 sm:text-3xl md:mb-6 md:text-left">{blogInfo.title}</h1>
@@ -104,10 +107,17 @@ const Post = () => {
                 <p className="mb-6 text-gray-500 sm:text-lg md:mb-8">{blogInfo.summary}</p>
               </div>
             </div>
+            <Comment
+              comments={blogInfo.comments}
+              TotalComment={blogInfo.TotalComment}
+              postedUserId={blogInfo.username[0]._id}
+              postId={blogInfo._id}
+              commentCheck={commentCheck}
+              setCommentCheck={setCommentCheck}
+            />
           </div>
         </div>
       }
-
 
     </>
   )

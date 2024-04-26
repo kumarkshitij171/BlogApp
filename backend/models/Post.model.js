@@ -21,7 +21,11 @@ const PostSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 }, { timestamps: true });
 
 exports.Post = mongoose.model('Post', PostSchema)

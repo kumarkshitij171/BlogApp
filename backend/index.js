@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { CreatePost, getAllPost, getBlog, editPost, deletePost } = require('./controller/Post.controller.js');
 const multer = require('multer');
+const { createComment, replyComment, deleteComment, deleteReply } = require('./controller/Comment.controller.js');
+const AuthenticateUser = require('./middleware/Authentication.js');
 
 const PORT = process.env.PORT || 8080;
 // Middleware
@@ -37,7 +39,7 @@ const router = express.Router();
 
 // Database connection
 (async () => {
-    await mongoose.connect(process.env.MONGO_URI, {}).then(() => {
+    await mongoose.connect(process.env.MONGO_URI).then(() => {
         console.log('Database connected');
     }).catch((err) => {
         console.log('Database connection failed', err);
@@ -53,16 +55,19 @@ router.route('/signup').post(
     upload.single('profileImg'),
     signup);
 router.route('/login').post(Login);
-router.route('/logout').post(Logout);
-router.route('/profile').get(profile);
+router.route('/logout').post(AuthenticateUser, Logout);
+router.route('/profile').get(AuthenticateUser, profile);
 router.route('/edit-profile').put(
+    AuthenticateUser,
     upload.fields([{ name: 'profileImg', maxCount: 1 }]),
     editProfile);
 
 // Post Routes
 router.route('/create-post').post(
+    AuthenticateUser,
     upload.single('postImg'),
-    CreatePost);
+    CreatePost
+);
 
 router.route('/posts').get(getAllPost)
 router.route('/blog/:id').get(getBlog)
@@ -70,11 +75,20 @@ router.route('/blog/:id').get(getBlog)
 // Edit Post => may update the file so adding multer middleware
 // PUT is restricted to create or update operations, and it should not be used for read operations.
 router.route('/edit-post/:id').put(
+    AuthenticateUser,
     upload.single('postImg'),
     editPost)
 
 // delete post
-router.route('/delete-post/:id').delete(deletePost)
+router.route('/delete-post/:id').delete(AuthenticateUser, deletePost)
+
+
+// Comment Routes
+router.route('/create-comment').post(AuthenticateUser, createComment);
+router.route('/reply-comment').post(AuthenticateUser, replyComment);
+router.route('/delete-comment').delete(AuthenticateUser, deleteComment);
+router.route('/delete-reply').delete(AuthenticateUser, deleteReply);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

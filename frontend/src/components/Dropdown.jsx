@@ -183,7 +183,11 @@ function Dropdown() {
                     {
                       userInfo?.profileImg ?
                         (<div>
-                          <img src={userInfo.profileImg} alt="profile" className="w-20 h-20 rounded-full relative" />
+                          <img
+                            src={userInfo.profileImg}
+                            alt="profile"
+                            className="w-20 h-20 rounded-full relative"
+                          />
                           {editProfile && <EditBtn changeImg={changeImg} className={"bottom-28 cursor-pointer bg-white rounded left-20"} />}
                         </div>)
                         : (<div>
