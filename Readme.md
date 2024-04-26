@@ -12,7 +12,8 @@ This is a full-stack web application built using the MERN stack (MongoDB, Expres
 2. Run `npm install` to install dependencies.
 
 cmd
-``` bash
+
+```bash
 cd frontend
 npm install
 ```
@@ -21,7 +22,7 @@ npm install
 
 To start the React app, run:
 
-``` bash
+```bash
 npm run dev
 ```
 
@@ -35,6 +36,7 @@ The app will be running at `http://localhost:5173`.
 2. Run `npm install` to install dependencies.
 
 #### cmd
+
 ```bash
 cd backend
 npm install
@@ -71,7 +73,6 @@ The server will be running on port `8080`.
   - Tailwind (for styling)
   - Yup (for form validation)
   - React Quill (for rich text editing)
-  
 - **Backend**:
   - Node.js
   - Express.js
@@ -86,29 +87,33 @@ The server will be running on port `8080`.
 
 Contributions are welcome! Please feel free to submit pull requests.
 
-### screenshots
+### Screenshots
 
 - Home Page
 
-![alt text](image.png)
+![Home Page](image.png)
 
 - Create/Edit Post
 
-![alt text](image-1.png)
+![Editor of the post](image-1.png)
 
 - Delete Post
 
-![alt text](image-2.png)
+![Delete Post](image-2.png)
 
 - Only Author have only edit and delete functionality
 
-![alt text](image-3.png)
+![Edit and Delete](image-3.png)
 
 - User can view and update their profile
 
-![alt text](image-4.png)
+![Profile View](image-4.png)
 
+- Comment and Reply on post
+
+![Comment and Reply](CommentIMG.png)
 <br>
 
 ### Deployed on Azure using Docker container
+
 [Click Here!](https://github.com/kumarkshitij171/BlogApp/tree/Deployment)
