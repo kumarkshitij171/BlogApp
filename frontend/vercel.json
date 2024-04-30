@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/v1/(.*)",
+            "destination": "https://mern-blog-app-smoky.vercel.app/api/$1"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}
