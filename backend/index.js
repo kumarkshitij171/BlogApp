@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { signup, Login, profile, Logout, editProfile } = require('./controller/User.controller.js');
+const { signup, Login, profile, Logout, editProfile, googleLogin } = require('./controller/User.controller.js');
 const app = express();
 const path = require('path');
 require('dotenv').config();
@@ -61,6 +61,9 @@ router.route('/edit-profile').put(
     AuthenticateUser,
     upload.fields([{ name: 'profileImg', maxCount: 1 }]),
     editProfile);
+
+// Google Auth
+router.route('/google-login').post(googleLogin);
 
 // Post Routes
 router.route('/create-post').post(

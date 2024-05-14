@@ -4,6 +4,14 @@ const bcrypt = require('bcryptjs');
 const SharpFunction = require("../utils/sharp.utils");
 const { uploadOnCloudinary, deleteFromCloudinary } = require("../utils/cloudinary.utils");
 const salt = bcrypt.genSaltSync(12);
+// Firebase Admin SDK
+const admin = require("firebase-admin");
+const serviceAccount = require("../blogify-mern-firebase-adminsdk.json"); // replace with your own blogify-mern-firebase-adminsdk.sample.json file
+const { getAuth } = require("firebase-admin/auth")
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -48,6 +56,86 @@ const signup = async (req, res) => {
         return res.status(400).json(error?.message);
     }
 };
+
+const googleLogin = async (req, res) => {
+    const { access_token } = req.body;
+    if (!access_token) {
+        return res.status(400).json({ error: 'Access token is required' });
+    }
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(access_token);
+        // console.log(decodedToken)
+        let { email, name, picture, user_id } = decodedToken;
+        if (!email || !name || !picture) {
+            return res.status(400).json({ error: 'Google login failed' })
+        }
+        // resolution of the image is 96x96, we need 384x384
+        picture = picture.replace("s96-c", "s384-c")
+        // check if user exists
+        const user = await User.findOne({ email });
+        if (user) {
+            // user exists =>can be via google login or Email based login
+            if (!user.googleId) {
+                // user is not google user
+                return res.status(400).json({ error: 'Login with email and password' })
+            }
+            console.log("user: ", user)
+            // user is google user => create token and login
+            const token = jwt.sign({
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                googleId: user.googleId,
+                profileImg: user.profileImg
+            }, process.env.JWT_SECRET, { expiresIn: '2d' });
+            if (!token) {
+                return res.status(400).json({ error: 'Token creation failed' });
+            }
+            return res
+                .status(200)
+                .cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'None',
+                })
+                .json({ message: 'Google login successful' });
+        }
+        // user does not exists => create new user and store into db
+        const newUser = await User.create({
+            name,
+            email,
+            profileImg: picture,
+            googleId: user_id,
+        });
+
+        if (!newUser) {
+            return res.status(400).json({ error: 'Google login failed' })
+        }
+        console.log(newUser)
+        // create token
+        const token = jwt.sign({
+            id: newUser._id,
+            email: newUser.email,
+            name: newUser.name,
+            googleId: newUser.googleId,
+            profileImg: newUser?.profileImg
+        }, process.env.JWT_SECRET, { expiresIn: '2d' });
+        if (!token) {
+            return res.status(400).json({ error: 'Token creation failed' });
+        }
+        return res
+            .status(200)
+            .cookie('token', token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            })
+            .json({ message: 'Google login successful' });
+    } catch (error) {
+        console.log("Error in googleLogin: ", error?.message);
+        return res.status(400).json(error?.message);
+    }
+}
 
 const Login = async (req, res) => {
     const { email, password } = req.body;
@@ -132,7 +220,7 @@ const editProfile = async (req, res) => {
     }
     try {
         // console.log(req.files)
-        const profileImg = req?.files['profileImg'] ? req.files['profileImg'][0] : undefined;
+        const profileImg = req?.files ? req.files['profileImg'][0] : undefined;
         // console.log(profileImg)
         let profileImgPath = null;
         if (profileImg) {
@@ -217,13 +305,14 @@ const editProfile = async (req, res) => {
     }
     catch (error) {
         // console.log(error)
-        return res.status(400).json({ "Error in Edit ": error?.message });
+        return res.status(400).json(error?.message);
     }
 }
 
 
 module.exports = {
     signup,
+    googleLogin,
     Login,
     Logout,
     profile,

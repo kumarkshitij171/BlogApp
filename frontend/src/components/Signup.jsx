@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Alert from './Alert';
 import { signupValidation } from '../validations/signup.validation';
 import { UserContext } from '../context/UserContext';
+import GoogleLogin from './GoogleLogin';
 
 const Signup = () => {
 
@@ -130,6 +131,7 @@ const Signup = () => {
             className="text-white bg-indigo-500 border-0 mb-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
             onClick={handlesubmit}
           >SignUp</button>
+          <GoogleLogin type={"Up"} />
           <p className="text-s text-gray-500 mt-3">
             Already have an account? <span onClick={handleClick} className="text-indigo-500 hover:text-indigo-600 cursor-pointer">Login</span>
           </p>

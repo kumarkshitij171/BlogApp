@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import Alert from './Alert';
 import { UserContext } from '../context/UserContext';
 import { loginValidation } from '../validations/Login.validation';
+import GoogleLogin from './GoogleLogin';
 
 
 const Login = () => {
@@ -43,9 +44,9 @@ const Login = () => {
       if (response.status === 200) {
         response.json()
           .then(data => (
-            // console.log(data)
+            // console.log(data),
             setLoggedIn(true),
-            setUserInfo(data.user)
+            setUserInfo(data?.user)
           ))
           .catch(err => console.log(err))
         navigate('/')
@@ -102,6 +103,7 @@ const Login = () => {
             className="text-white bg-indigo-500 border-0 mb-2 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
             onClick={handlesubmit}
           >Login</button>
+          <GoogleLogin type={"In"} setRes={setRes} setError={setError} />
           <p className="text-s text-gray-500 mt-3">
             Don't have an account? <span onClick={handleClick} className="text-indigo-500 hover:text-indigo-600 cursor-pointer">SignUp</span>
           </p>

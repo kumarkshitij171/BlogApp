@@ -19,7 +19,7 @@ const Post = () => {
       .then(res => res.json())
       .then(Info => setBlogInfo(Info))
       .catch(err => console.log(err))
-  }, [commentCheck])
+  }, [commentCheck, userInfo])
 
   const editPost = async () => {
     navigate(`/edit-post/${id}`)
