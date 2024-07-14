@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import { Link } from 'react-router-dom'
 import { PostContext } from '../context/PostContext';
 import ReactLoading from "react-loading";
+import Footer from "./Footer";
 
 const Home = () => {
 
@@ -19,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="bg-white py-3">
+      <div className="bg-white py-3 min-h-[74vh]">
         <div className="mx-3 max-w-screen-xl px-4 md:px-8">
           {/* <!-- Blog article - start --> */}
           <div className="grid gap-8 mb-4 mt-2">
@@ -71,6 +72,7 @@ const Home = () => {
           </div>
         </div>
       </div >
+      <Footer />
     </>
   )
 }

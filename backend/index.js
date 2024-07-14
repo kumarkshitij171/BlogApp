@@ -10,12 +10,14 @@ const { CreatePost, getAllPost, getBlog, editPost, deletePost } = require('./con
 const multer = require('multer');
 const { createComment, replyComment, deleteComment, deleteReply } = require('./controller/Comment.controller.js');
 const AuthenticateUser = require('./middleware/Authentication.js');
+const { getRazorPayApiKey, createPayment, storeVerifiedPayment } = require('./controller/Payment.controller.js');
 
 const PORT = process.env.PORT || 8080;
 // Middleware
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }));
 
 // Multer middleware
 // const upload = multer({ dest: 'uploads/' });
@@ -91,6 +93,11 @@ router.route('/create-comment').post(AuthenticateUser, createComment);
 router.route('/reply-comment').post(AuthenticateUser, replyComment);
 router.route('/delete-comment').delete(AuthenticateUser, deleteComment);
 router.route('/delete-reply').delete(AuthenticateUser, deleteReply);
+
+// Razorpay Payment Gateway
+router.route('/get-razorpay-api-key').get(getRazorPayApiKey);
+router.route('/create-payment').post(createPayment)
+router.route('/verify-payment').post(storeVerifiedPayment);
 
 
 app.listen(PORT, () => {

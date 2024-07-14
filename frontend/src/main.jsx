@@ -10,6 +10,7 @@ import NotFoundPage from './components/NotFoundPage.jsx'
 import Post from './components/Post.jsx'
 import CreatePost from './components/CreatePost.jsx'
 import EditPost from './components/EditPost.jsx'
+import PaymentSuccessPage from './components/helper/PaymentSuccessPage.jsx'
 
 
 const router = createBrowserRouter([
@@ -19,37 +20,40 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home/>
+        element: <Home />
       },
       {
         path: '/login',
-        element: <Login/>
+        element: <Login />
       },
       {
         path: '/signup',
-        element: <Signup/>
+        element: <Signup />
       },
       {
         path: '/create-post',
-        element: <CreatePost/>
+        element: <CreatePost />
       },
       {
         path: '/blog/:id',
-        element: <Post/>
+        element: <Post />
       },
       {
         path: '/edit-post/:id',
-        element: <EditPost/>
+        element: <EditPost />
       },
-      
+      {
+        path: '/payment-success',
+        element: <PaymentSuccessPage />
+      },
     ],
-    errorElement: <NotFoundPage/>
+    errorElement: <NotFoundPage />
   },
-  
+
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )

@@ -7,7 +7,6 @@ const salt = bcrypt.genSaltSync(12);
 // Firebase Admin SDK
 const admin = require("firebase-admin");
 const serviceAccount = require("../blogify-mern-firebase-adminsdk.json"); // replace with your own blogify-mern-firebase-adminsdk.sample.json file
-const { getAuth } = require("firebase-admin/auth")
 // Initialize Firebase Admin SDK
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -79,7 +78,7 @@ const googleLogin = async (req, res) => {
                 // user is not google user
                 return res.status(400).json({ error: 'Login with email and password' })
             }
-            console.log("user: ", user)
+            // console.log("user: ", user)
             // user is google user => create token and login
             const token = jwt.sign({
                 id: user._id,
@@ -111,7 +110,7 @@ const googleLogin = async (req, res) => {
         if (!newUser) {
             return res.status(400).json({ error: 'Google login failed' })
         }
-        console.log(newUser)
+        // console.log(newUser)
         // create token
         const token = jwt.sign({
             id: newUser._id,
@@ -132,7 +131,7 @@ const googleLogin = async (req, res) => {
             })
             .json({ message: 'Google login successful' });
     } catch (error) {
-        console.log("Error in googleLogin: ", error?.message);
+        // console.log("Error in googleLogin: ", error?.message);
         return res.status(400).json(error?.message);
     }
 }

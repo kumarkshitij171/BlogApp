@@ -4,6 +4,12 @@ Welcome to the Blog App!
 
 This is a full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js).
 
+## Clone the repository
+
+```bash
+git clone https://github.com/kumarkshitij171/BlogApp.git
+```
+
 ## Frontend
 
 ### Installation
@@ -18,6 +24,10 @@ cd frontend
 npm install
 ```
 
+### Configuration
+
+Update the `.env.sample` file with `.env` in the `frontend` folder with your API key.
+
 ### Usage
 
 To start the React app, run:
@@ -26,7 +36,7 @@ To start the React app, run:
 npm run dev
 ```
 
-The app will be running at `http://localhost:5173`.
+The app will be running at `http://localhost:5173`
 
 ## Backend
 
@@ -44,7 +54,9 @@ npm install
 
 ### Configuration
 
-Make sure you have MongoDB installed and running. Update the `.env` file in the `backend` folder with your MongoDB URI & Cloudinary API key.
+Update the `.env.sample` file with `.env` in the `backend` folder with your API key.
+
+- for Google Oauth, create a project in Google Cloud Console and get the client id and secret and replace the sample adminsdk.json with your own.
 
 ### Usage
 
@@ -54,7 +66,7 @@ To start the Node.js server, run:
 npm start
 ```
 
-The server will be running on port `8080`.
+The server will be running on port `8080` or Specified Port.
 
 ## Features
 
@@ -82,6 +94,8 @@ The server will be running on port `8080`.
   - Multer (for file uploads)
   - Cloudinary (for image uploads)
   - Sharp (for image resizing)
+  - Oauth (for Google authentication)
+  - Razorpay (for payment gateway)
 
 ## Contributing
 
@@ -91,7 +105,7 @@ Contributions are welcome! Please feel free to submit pull requests.
 
 - Home Page
 
-![Home Page](image.png)
+![Home Page](home.png)
 
 - Create/Edit Post
 
@@ -112,6 +126,13 @@ Contributions are welcome! Please feel free to submit pull requests.
 - Comment and Reply on post
 
 ![Comment and Reply](CommentIMG.png)
+
+- Implement payment gateway using Razorpay
+
+![Payment Gateway](PaymentGateway.png)
+
+![Payment Dashboard](RazorPayDashboard.png)
+
 <br>
 
 ### Deployed on Azure using Docker container
