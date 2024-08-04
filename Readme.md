@@ -105,33 +105,33 @@ Contributions are welcome! Please feel free to submit pull requests.
 
 - Home Page
 
-![Home Page](home.png)
+![Home Page](assets/home.png)
 
 - Create/Edit Post
 
-![Editor of the post](image-1.png)
+![Editor of the post](assets/image-1.png)
 
 - Delete Post
 
-![Delete Post](image-2.png)
+![Delete Post](assets/image-2.png)
 
 - Only Author have only edit and delete functionality
 
-![Edit and Delete](image-3.png)
+![Edit and Delete](assets/image-3.png)
 
 - User can view and update their profile
 
-![Profile View](image-4.png)
+![Profile View](assets/image-4.png)
 
 - Comment and Reply on post
 
-![Comment and Reply](CommentIMG.png)
+![Comment and Reply](assets/CommentIMG.png)
 
 - Implement payment gateway using Razorpay
 
-![Payment Gateway](PaymentGateway.png)
+![Payment Gateway](assets/PaymentGateway.png)
 
-![Payment Dashboard](RazorPayDashboard.png)
+![Payment Dashboard](assets/RazorPayDashboard.png)
 
 <br>
 
