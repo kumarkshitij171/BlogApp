@@ -2,12 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
-
     const checkoutHandler = async (amount) => {
         // get api key from backend => but getting on the netwrok tab
         // const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/get-razorpay-api-key`)
         // const { key } = await res.json()
 
+        const { key } = import.meta.env.VITE_RAZORPAY_API_KEY
         // create order 
         const data = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/create-payment`, {
             method: "POST",
@@ -21,14 +21,14 @@ const Footer = () => {
         // console.log(order)
 
         const options = {
-            key: import.meta.env.VITE_RAZORPAY_API_KEY,
+            key: key,
             amount: Number(order?.amount),
             currency: "INR",
             name: "Blogify",
             description: "Payment using RazorPay",
             image: "https://avatars.githubusercontent.com/u/113905269?v=4",
             order_id: order?.id,
-            callback_url: `${import.meta.env.VITE_FRONTEND_BASE_URL}/verify-payment`,
+            callback_url: `${import.meta.env.VITE_BACKEND_BASE_URL}/verify-payment`,
             notes: {
                 "address": "Razorpay Corporate Office"
             },

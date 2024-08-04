@@ -8,6 +8,8 @@ const instance = new Razorpay({
 });
 
 const createPayment = async (req, res) => {
+    // console.log("createPayment")
+    // console.log(req.body)
     const { amount } = req.body;
     const amountInPaise = Number(amount) * 100;
     const options = {
@@ -33,7 +35,7 @@ const getRazorPayApiKey = (req, res) => {
 
 // After creating the payment, we need to verify and store the payment details in the database.
 const storeVerifiedPayment = async (req, res) => {
-    console.log("storeVerifiedPayment")
+    // console.log("storeVerifiedPayment")
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
@@ -60,10 +62,12 @@ const storeVerifiedPayment = async (req, res) => {
         if (!sucessPayment) {
             return res.status(400).json({ message: "Payment failed" });
         }
-        console.log("Success Payment", sucessPayment)
+        // console.log("Success Payment", sucessPayment)
         res.redirect(`${process.env.CLIENT_URL}/payment-success?reference=${razorpay_payment_id}`)
+        // return res.status(200).json({ message: "Payment Successful" });
     } catch (error) {
         console.log(error)
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
