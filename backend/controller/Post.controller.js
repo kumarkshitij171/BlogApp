@@ -66,14 +66,14 @@ const getAllPost = async (req, res) => {
             $project: {
                 'username.password': 0, // exclude 'password' field
                 'username.email': 0, // exclude 'email' field
+                'description': 0,
+                'comments': 0
+
             }
         },
         {
             $sort: { updatedAt: -1 }
         },
-        {
-            $limit: 20
-        }
     ]);
 
     // if(!posts?.length){
