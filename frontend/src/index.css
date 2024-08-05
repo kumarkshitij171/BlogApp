@@ -9,17 +9,41 @@
   border-radius: 1rem;
 }
 /* Post Description Css formatting */
-pre{
+pre {
   background-color: beige;
   padding: 1rem;
   border-radius: 4px;
 }
 
-#postDesc>ul>li{
+#postDesc > ul > li {
   list-style: disc;
   margin-left: 1rem;
 }
-#postDesc>ol>li{
+#postDesc > ol > li {
   list-style: decimal;
   margin-left: 1rem;
+}
+#postDesc > h1 {
+  font-weight: bold;
+  font-size: 40px;
+}
+#postDesc > h2 {
+  font-weight: bold;
+  font-size: 30px;
+}
+#postDesc > h3 {
+  font-weight: bold;
+  font-size: 1.17em;
+}
+#postDesc > h4 {
+  font-weight: bold;
+  font-size: 1em;
+}
+#postDesc > h5 {
+  font-weight: bold;
+  font-size: 0.83em;
+}
+#postDesc > h6 {
+  font-weight: bold;
+  font-size: 0.67em;
 }
