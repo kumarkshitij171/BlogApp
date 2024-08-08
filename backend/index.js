@@ -3,6 +3,7 @@ const cors = require('cors');
 const { signup, Login, profile, Logout, editProfile, googleLogin } = require('./controller/User.controller.js');
 const app = express();
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -49,17 +50,26 @@ const router = express.Router();
     });
 })()
 
+// Rate Limiter
+const limiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 2, // limit each IP to 50 requests per windowMs
+    message: "Too many requests, please try again later.",
+});
+
 // Routes
 app.use('/', router);
 
 // User Routes
 router.route('/signup').post(
+    limiter,
     upload.single('profileImg'),
     signup);
-router.route('/login').post(Login);
+router.route('/login').post(limiter, Login);
 router.route('/logout').post(AuthenticateUser, Logout);
 router.route('/profile').get(AuthenticateUser, profile);
 router.route('/edit-profile').put(
+    limiter,
     AuthenticateUser,
     upload.fields([{ name: 'profileImg', maxCount: 1 }]),
     editProfile);
@@ -69,6 +79,7 @@ router.route('/google-login').post(googleLogin);
 
 // Post Routes
 router.route('/create-post').post(
+    limiter,
     AuthenticateUser,
     upload.single('postImg'),
     CreatePost
@@ -86,7 +97,6 @@ router.route('/edit-post/:id').put(
 
 // delete post
 router.route('/delete-post/:id').delete(AuthenticateUser, deletePost)
-
 
 // Comment Routes
 router.route('/create-comment').post(AuthenticateUser, createComment);
