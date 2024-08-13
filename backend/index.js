@@ -60,6 +60,10 @@ const limiter = rateLimit({
 // Routes
 app.use('/', router);
 
+app.get('/', (req, res) => {
+    return res.json({ message: 'Welcome to Blog App API' });
+});
+
 // User Routes
 router.route('/signup').post(
     limiter,
