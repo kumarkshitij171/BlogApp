@@ -1,3 +1,4 @@
 node_modules
 .env
 blogify-mern-firebase-adminsdk.json
+.vercel

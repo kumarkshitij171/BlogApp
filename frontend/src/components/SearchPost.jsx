@@ -1,47 +1,55 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useCallback, useRef } from 'react'
 import { PostContext } from '../context/PostContext'
 
 const SearchPost = () => {
-
     const { setPosts } = useContext(PostContext)
-    const [seachText, setSearchText] = useState("")
-    let debounceTimeout
+    const [searchText, setSearchText] = useState("")
+    const debounceTimeoutRef = useRef(null)
 
-    const handleSearch = (e) => {
-        setSearchText(e.target.value)
-        // filter the post on the basis of search text value by title
-        // clear the previous search result
-        clearTimeout(debounceTimeout)
-
-        debounceTimeout = setTimeout(() => {
-            setPosts(prevPosts => prevPosts
-                .filter(post => post && (post
-                    .title
-                    .toLowerCase()
-                    .includes(e.target.value.toLowerCase()) ||
-                    post
-                        .description
-                        .toLowerCase()
-                        .includes(e.target.value.toLowerCase()) ||
-                    post
-                        .username[0]
-                        .name
-                        .toLowerCase()
-                        .includes(e.target.value.toLowerCase()) ||
-                    post
-                        .summary
-                        .toLowerCase()
-                        .includes(e.target.value.toLowerCase())
-                )
-                ))
-
-        }, 1200);
-        if (e.target.value === "") {
-            fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/posts`)
-                .then(res => res.json())
-                .then(posts => setPosts(posts))
+    const fetchAllPosts = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/posts`)
+            if (!response.ok) {
+                throw new Error('Failed to fetch posts')
+            }
+            const posts = await response.json()
+            setPosts(posts)
+        } catch (error) {
+            console.error('Error fetching posts:', error)
+            // You might want to set an error state here or show a notification to the user
         }
     }
+
+    const filterPosts = (posts, searchValue) => {
+        return posts.filter(post => {
+            const title = post?.title?.toLowerCase() || '';
+            const description = post?.description?.toLowerCase() || '';
+            const username = post?.username?.[0]?.name?.toLowerCase() || '';
+            const summary = post?.summary?.toLowerCase() || '';
+
+            return title.includes(searchValue.toLowerCase()) ||
+                description.includes(searchValue.toLowerCase()) ||
+                username.includes(searchValue.toLowerCase()) ||
+                summary.includes(searchValue.toLowerCase());
+        });
+    }
+
+    const handleSearch = useCallback(async (e) => {
+        const searchValue = e.target.value;
+        setSearchText(searchValue);
+
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+        }
+
+        debounceTimeoutRef.current = setTimeout(async () => {
+            if (searchValue === "") {
+                await fetchAllPosts();
+            } else {
+                setPosts(prevPosts => filterPosts(prevPosts, searchValue));
+            }
+        }, 300);
+    }, [setPosts]);
 
     return (
         <div className='flex items-center bg-[#eee] md:p-1 rounded-md shadow-sm cursor-pointer h-9 md:h-10 w-24 sm:w-44 md:w-72 pl-1'>
@@ -54,8 +62,8 @@ const SearchPost = () => {
                 className="bg-transparent rounded-md md:p-1 mx-1 w-inherit outline-none"
                 placeholder="search"
                 type="search"
-                value={seachText}
-                onChange={(e) => handleSearch(e)}
+                value={searchText}
+                onChange={handleSearch}
             />
         </div>
     )

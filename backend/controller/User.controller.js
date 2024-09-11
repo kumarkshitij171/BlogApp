@@ -6,17 +6,8 @@ const { uploadOnCloudinary, deleteFromCloudinary } = require("../utils/cloudinar
 const salt = bcrypt.genSaltSync(12);
 // Firebase Admin SDK
 const admin = require("firebase-admin");
+const serviceAccount = require('../blogify-mern-firebase-adminsdk.json');
 
-let serviceAccount;
-
-if (process.env.NODE_ENV === 'production') {
-    // Load from environment variable in production
-    serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_SDK_JSON);
-} else {
-    // Load from file in other environments (e.g., development)
-    serviceAccount = require('../blogify-mern-firebase-adminsdk.json');
-}
-require("../blogify-mern-firebase-adminsdk.json"); // replace with your own blogify-mern-firebase-adminsdk.sample.json file
 // Initialize Firebase Admin SDK
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
